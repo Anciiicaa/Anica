@@ -18,7 +18,7 @@ def dodaj_u_tabelu(db: Session, id: str):
     return db.query(model.Osoba).filter(model.Osoba.id == id).first()
 
 def createOsobanova(db: Session, osoba: sema.Osoba, id:str, ime:str, prezime:str, grad:str, adresa:str, transakcija:boolean):
-    db_osoba = model.Osoba(id = id, ime = ime, prezime = prezime, grad = grad, adresa = adresa, transakcija = osoba.transakcija)
+    db_osoba = model.Osoba(id = id, ime = ime, prezime = prezime, grad = grad, adresa = adresa, transakcija = transakcija)
     db.add(db_osoba)
     db.commit()
     db.refresh(db_osoba)
