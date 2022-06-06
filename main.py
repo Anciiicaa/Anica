@@ -47,6 +47,16 @@ def ispisiOsobu(id: int, db: Session = Depends(get_db)):
     if db_osoba is None:
         raise HTTPException(status_code=400, detail="ID not exist")
     return db_osoba
+
+@app.delete("/osobe/brisi/")
+def izbrisi(id:int,item:sema.Osoba, db:Session = Depends(get_db)):
+    return crud.brisiOsobuSaId(db = db, osoba = item, id = id)
+#@app.post("/osobe/dodaj/")
+#def promeni_prezime(id:int,prezime:str, item:sema.Osoba, db:Session = Depends(get_db)):
+#    return crud.promeni_osobi_prezime(db = db, osoba=item, id = id,prezime=prezime)
+    
+
+
         
 
     

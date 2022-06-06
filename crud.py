@@ -27,6 +27,22 @@ def createOsobanova(db: Session, osoba: sema.Osoba, id:str, ime:str, prezime:str
 def uzmiOsobusaID(db: Session, id:int):
     return db.query(model.Osoba).filter(model.Osoba.id == id).first()
 
+def brisiOsobuSaId(db: Session, osoba: sema.Osoba, id:int):
+    db_osoba = db.query(model.Osoba).filter(model.Osoba.id == id).first()
+    db.delete(db_osoba)
+    db.commit()
+    db.refresh
+    return "Uspesno izbrisano"
+
+#def promeni_osobi_prezime(db: Session, osoba: sema.Osoba, id:int, prezime:str):
+#   db_osoba = db.query(model.Osoba).filter(model.Osoba.id == id).first()
+   
+   
+    
+
+    
+    
+
 
     
 
