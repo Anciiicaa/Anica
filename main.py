@@ -1,4 +1,4 @@
-from xmlrpc.client import boolean
+
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
@@ -22,27 +22,26 @@ def get_db():
         db.close()
     
 
-#dodaje u tabelu osobu ukoliko nemaju isti id(u sustini nece ni morati ovo jer u tabelu nece moci da se dodaju osobe sa istim id-jem jer je id primary key)
-@app.post("/osobe/", response_model=sema.Osoba)
+@app.post("/osobe/")
 def create_osobe(osoba: sema.pravi_osobu, db: Session = Depends(get_db)):
     db_user = crud.dodaj_u_tabelu(db, id=osoba.id)
     if db_user:
         raise HTTPException(status_code=400, detail="ID already exist")
     return crud.createOsoba(db=db, osoba=osoba)
 
-#ovde treba na api-ju da mi ispise osobe iz tabele u zavisnosti koje intervale unesem, ali mi izlazi eror 500
-@app.get("/osobe/", response_model=List[sema.Osoba])
+
+@app.get("/osobe/")
 def read_osobe(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     osobe = crud.get_osobe(db, skip=skip, limit=limit)
     return osobe
 
-#Ovde mi lepo dodaje u tabelu, ali mi pise da je greska 500 i ovo sve ostalo kad pozovem izlazi mi greska 500, ne znam sto
-@app.post("/osobe/dodaj/", response_model=sema.pravi_osobu)
-def dodaj_osobu(id: int, ime:str, prezime:str, adresa:str, grad:str, transakcija:bool, item:sema.pravi_osobu, db:Session = Depends(get_db)):
+
+@app.post("/osobe/dodaj/")
+def dodaj_osobu(id: int, ime:str, prezime:str, adresa:str, grad:str, transakcija:bool, item:sema.Osoba, db:Session = Depends(get_db)):
     return crud.createOsobanova(db = db, osoba=item, id = id, ime = ime,prezime = prezime, adresa = adresa, grad = grad, transakcija=transakcija)
 
-#Na osnovu unesenog ID da mi ispise tu osobu
-@app.get("/osoba/{osoba_id}", response_model=sema.Osoba)
+
+@app.get("/osoba/{osoba_id}")
 def ispisiOsobu(id: int, db: Session = Depends(get_db)):
     db_osoba = crud.uzmiOsobusaID(db = db, id = id)
     if db_osoba is None:

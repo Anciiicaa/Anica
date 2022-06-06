@@ -1,4 +1,3 @@
-from xmlrpc.client import boolean
 from sqlalchemy.orm import Session
 import model, sema
 import sys
@@ -18,7 +17,7 @@ def createOsoba(db: Session, osoba: sema.Osoba):
 def dodaj_u_tabelu(db: Session, id: str):
     return db.query(model.Osoba).filter(model.Osoba.id == id).first()
 
-def createOsobanova(db: Session, osoba: sema.Osoba, id:str, ime:str, prezime:str, grad:str, adresa:str, transakcija:boolean):
+def createOsobanova(db: Session, osoba: sema.Osoba, id:str, ime:str, prezime:str, grad:str, adresa:str, transakcija:bool):
     db_osoba = model.Osoba(id = id, ime = ime, prezime = prezime, grad = grad, adresa = adresa, transakcija = transakcija)
     db.add(db_osoba)
     db.commit()
